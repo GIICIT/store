@@ -1,12 +1,8 @@
 package com.example.store.controller;
 
+import com.example.store.dao.OrderDAO;
 import com.example.store.dto.OrderDTO;
-import com.example.store.entity.Order;
-import com.example.store.mapper.OrderMapper;
-import com.example.store.repository.OrderRepository;
-
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,17 +13,21 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderController {
 
-    private final OrderRepository orderRepository;
-    private final OrderMapper orderMapper;
+    private final OrderDAO orderDAO;
 
     @GetMapping
     public List<OrderDTO> getAllOrders() {
-        return orderMapper.ordersToOrderDTOs(orderRepository.findAll());
+        return orderDAO.getAllOrders();
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public OrderDTO createOrder(@RequestBody Order order) {
-        return orderMapper.orderToOrderDTO(orderRepository.save(order));
+    public OrderDTO createOrder(@RequestBody OrderDTO orderDTO) {
+        return orderDAO.createOrder(orderDTO);
+    }
+
+    @GetMapping("/{id}")
+    public OrderDTO getOrderByID(@PathVariable Long id) {
+        return orderDAO.getOrderByID(id);
     }
 }
