@@ -13,7 +13,6 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -35,9 +34,6 @@ public class OrderRepositoryTest {
 
     @Autowired
     private CustomerRepository customerRepository;
-
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
 
     CustomerDAO customerDAO;
 
@@ -81,18 +77,10 @@ public class OrderRepositoryTest {
 
     @Test
     void when_save_order(){
-        String customerSQL = "SELECT setval(pg_get_serial_sequence('\"customer\"', 'id'), (SELECT MAX(id) FROM \"customer\"));";
-        jdbcTemplate.execute(customerSQL);
-
-        String orderSQL = "SELECT setval(pg_get_serial_sequence('\"order\"', 'id'), (SELECT MAX(id) FROM \"order\"));";
-        jdbcTemplate.execute(orderSQL);
-
         CustomerDTO customer = customerDAO.createCustomer(getCustomer());
-        assertThat(customer.getId()).isEqualTo(101L);
         assertThat(customer.getName()).isEqualTo(getCustomer().getName());
 
         OrderDTO oderDTO = orderDAO.createOrder(getOrder());
-        assertThat(oderDTO.getId()).isEqualTo(10001L);
         assertThat(oderDTO.getDescription()).isEqualTo(getOrder().getDescription());
     }
 

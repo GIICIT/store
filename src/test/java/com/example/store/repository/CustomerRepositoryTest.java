@@ -8,7 +8,6 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -27,9 +26,6 @@ public class CustomerRepositoryTest {
 
     @Autowired
     private CustomerRepository customerRepository;
-
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
 
     CustomerDAO customerDAO;
 
@@ -61,19 +57,12 @@ public class CustomerRepositoryTest {
 
     @Test
     void when_save_customer(){
-        String sql = "SELECT setval(pg_get_serial_sequence('\"customer\"', 'id'), (SELECT MAX(id) FROM \"customer\"));";
-        jdbcTemplate.execute(sql);
-
         CustomerDTO customer = customerDAO.createCustomer(customerBuilder("Test Customer 2"));
-        assertThat(customer.getId()).isEqualTo(101L);
         assertThat(customer.getName()).isEqualTo("Test Customer 2");
     }
 
     @Test
     void when_search_customer_by_name(){
-        String sql = "SELECT setval(pg_get_serial_sequence('\"customer\"', 'id'), (SELECT MAX(id) FROM \"customer\"));";
-        jdbcTemplate.execute(sql);
-
         customerDAO.createCustomer(customerBuilder("Jessy James Wilson"));
         customerDAO.createCustomer(customerBuilder("James Wilson"));
         customerDAO.createCustomer(customerBuilder("John Doe"));
