@@ -8,4 +8,6 @@ public interface CustomerDAO {
     List<CustomerDTO> getAllCustomers();
 
     CustomerDTO createCustomer(CustomerDTO customerDTO);
+
+    List<CustomerDTO> findCustomersByName(String name);
 }

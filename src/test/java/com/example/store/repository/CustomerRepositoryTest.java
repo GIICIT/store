@@ -64,14 +64,37 @@ public class CustomerRepositoryTest {
         String sql = "SELECT setval(pg_get_serial_sequence('\"customer\"', 'id'), (SELECT MAX(id) FROM \"customer\"));";
         jdbcTemplate.execute(sql);
 
-        CustomerDTO customer = customerDAO.createCustomer(getCustomer());
+        CustomerDTO customer = customerDAO.createCustomer(customerBuilder("Test Customer 2"));
         assertThat(customer.getId()).isEqualTo(101L);
-        assertThat(customer.getName()).isEqualTo(getCustomer().getName());
+        assertThat(customer.getName()).isEqualTo("Test Customer 2");
     }
 
-    private CustomerDTO getCustomer(){
+    @Test
+    void when_search_customer_by_name(){
+        String sql = "SELECT setval(pg_get_serial_sequence('\"customer\"', 'id'), (SELECT MAX(id) FROM \"customer\"));";
+        jdbcTemplate.execute(sql);
+
+        customerDAO.createCustomer(customerBuilder("Jessy James Wilson"));
+        customerDAO.createCustomer(customerBuilder("James Wilson"));
+        customerDAO.createCustomer(customerBuilder("John Doe"));
+        customerDAO.createCustomer(customerBuilder("Michael James"));
+        customerDAO.createCustomer(customerBuilder("Wilson Brown"));
+        customerDAO.createCustomer(customerBuilder("Jessy James Wilson"));
+        customerDAO.createCustomer(customerBuilder("Michael James"));
+
+        List<CustomerDTO> customers = customerDAO.findCustomersByName("James Wilson");
+        assertThat(customers.size()).isEqualTo(6);
+
+        List<CustomerDTO> customers2 = customerDAO.findCustomersByName("Wilson");
+        assertThat(customers2.size()).isEqualTo(4);
+
+        List<CustomerDTO> customers3 = customerDAO.findCustomersByName("Michael");
+        assertThat(customers3.size()).isEqualTo(2);
+    }
+
+    private CustomerDTO customerBuilder(String name){
         CustomerDTO customerDTO = new CustomerDTO();
-        customerDTO.setName("Test Customer");
+        customerDTO.setName(name);
         return customerDTO;
     }
 }

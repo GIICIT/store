@@ -25,4 +25,10 @@ public class CustomerController {
     public CustomerDTO createCustomer(@RequestBody CustomerDTO customerDTO) {
         return customerDAO.createCustomer(customerDTO);
     }
+
+    @GetMapping("/{name}")
+    @ResponseStatus(HttpStatus.OK)
+    public List<CustomerDTO> findCustomerByName(@PathVariable String name) {
+        return customerDAO.findCustomersByName(name);
+    }
 }
