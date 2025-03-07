@@ -25,6 +25,10 @@ docker run -d \
   postgres:16.2 \
   postgres -c wal_level=logical
 ```
+Or using Docker Compose:
+```shell
+docker-compose up -d
+```
 
 # Running the application
 You should be able to run the service using
