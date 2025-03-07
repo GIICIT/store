@@ -35,6 +35,10 @@ You should be able to run the service using
 ```shell
 ./gradlew bootRun
 ```
+Define the profile when you want to run the service
+```shell
+./gradlew bootRun --args='--spring.profiles.active=local'
+```
 
 The application uses Liquibase to migrate the schema. Some sample data is provided. You can create more data by reading the documentation in utils/README.md
 
