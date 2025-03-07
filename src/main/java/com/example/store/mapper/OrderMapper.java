@@ -2,7 +2,7 @@ package com.example.store.mapper;
 
 import com.example.store.dto.OrderCustomerDTO;
 import com.example.store.dto.OrderDTO;
-import com.example.store.dto.OrderProductDTO;
+import com.example.store.dto.ProductOrderDTO;
 import com.example.store.entity.Customer;
 import com.example.store.entity.Order;
 import com.example.store.entity.Product;
@@ -22,7 +22,7 @@ public interface OrderMapper {
 
     OrderCustomerDTO orderToOrderCustomerDTO(Customer customer);
 
-    OrderProductDTO orderToOrderProductDTO(Product Product);
+    ProductOrderDTO orderToOrderProductDTO(Product Product);
 
     Order orderDTOToOrder(OrderDTO orderDTO);
 }

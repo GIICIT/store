@@ -9,5 +9,5 @@ public class OrderDTO {
     private Long id;
     private String description;
     private OrderCustomerDTO customer;
-    private List<OrderProductDTO> products;
+    private List<ProductOrderDTO> products;
 }
