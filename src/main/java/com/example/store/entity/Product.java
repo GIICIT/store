@@ -8,17 +8,13 @@ import java.util.List;
 
 @Entity
 @Data
-@Table(name = "\"order\"")
-public class Order {
+public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Customer customer;
-
-    @ManyToMany
-    private List<Product> product = new ArrayList<>();
+    @ManyToMany(mappedBy = "product", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    private List<Order> order = new ArrayList<>();
 }

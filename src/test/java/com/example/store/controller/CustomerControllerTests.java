@@ -1,5 +1,7 @@
 package com.example.store.controller;
 
+import com.example.store.dao.CustomerDAO;
+import com.example.store.dto.CustomerDTO;
 import com.example.store.entity.Customer;
 import com.example.store.mapper.CustomerMapper;
 import com.example.store.repository.CustomerRepository;
@@ -9,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
@@ -33,33 +36,47 @@ class CustomerControllerTests {
     @MockitoBean
     private CustomerRepository customerRepository;
 
+    @MockitoBean
+    private CustomerDAO customerDAO;
+
     private Customer customer;
+
+    private CustomerDTO customerDTO;
 
     @BeforeEach
     void setUp() {
-        customer = new Customer();
-        customer.setName("John Doe");
-        customer.setId(1L);
+        customerDTO = new CustomerDTO();
+        customerDTO.setName("John Doe");
     }
 
     @Test
     void testCreateCustomer() throws Exception {
-        when(customerRepository.save(customer)).thenReturn(customer);
+        when(customerDAO.createCustomer(customerDTO)).thenReturn(customerDTO);
 
         mockMvc.perform(post("/customer")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(customer)))
+                        .content(objectMapper.writeValueAsString(customerDTO)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.name").value("John Doe"));
     }
 
     @Test
     void testGetAllCustomers() throws Exception {
-        when(customerRepository.findAll()).thenReturn(List.of(customer));
+        when(customerDAO.getAllCustomers()).thenReturn(List.of(customerDTO));
 
         mockMvc.perform(get("/customer"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$..name").value("John Doe"));
-        ;
     }
+
+    @Test
+    void testFindCustomerByName() throws Exception {
+        String name = "John Doe";
+        when(customerDAO.findCustomersByName(name)).thenReturn(List.of(customerDTO));
+
+        mockMvc.perform(get("/customer/{name}", name))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].name").value("John Doe"));
+    }
+
 }

@@ -1,1 +1,0 @@
-SELECT setval('order_id_seq', (SELECT MAX(id) FROM "order"));

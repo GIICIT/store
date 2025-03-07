@@ -4,4 +4,4 @@ databaseChangeLog:
       author: wallacevanzyl
       changes:
         - sqlFile:
-            path: db/changelog/order-table-set-max-id.sql
+            path: db/changelog/create-product-table.sql

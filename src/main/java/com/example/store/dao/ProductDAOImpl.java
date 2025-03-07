@@ -1,0 +1,35 @@
+package com.example.store.dao;
+
+import com.example.store.dto.ProductDTO;
+import com.example.store.entity.Product;
+import com.example.store.mapper.ProductMapper;
+import com.example.store.repository.ProductRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.Optional;
+
+@Component
+@RequiredArgsConstructor
+public class ProductDAOImpl implements ProductDAO {
+
+    private final ProductRepository productRepository;
+    private final ProductMapper productMapper;
+
+    @Override
+    public List<ProductDTO> getAllProducts() {
+        return productMapper.productsToProductDTOs(productRepository.findAll());
+    }
+
+    @Override
+    public ProductDTO createProduct(ProductDTO productDTO) {
+        return productMapper.productToProductDTO(productRepository.save(productMapper.productDTOToProduct(productDTO)));
+    }
+
+    @Override
+    public ProductDTO getAllProductById(Long id) {
+        Optional<Product> order = productRepository.findById(id);
+        return order.map(productMapper::productToProductDTO).orElse(new ProductDTO());
+    }
+}

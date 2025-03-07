@@ -1,7 +1,0 @@
-databaseChangeLog:
-  - changeSet:
-      id: 3-data
-      author: wallacevanzyl
-      changes:
-        - sqlFile:
-            path: db/changelog/set-max-id-test.sql

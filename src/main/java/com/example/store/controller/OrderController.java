@@ -1,5 +1,7 @@
 package com.example.store.controller;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import com.example.store.dao.OrderDAO;
 import com.example.store.dto.OrderDTO;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,11 @@ public class OrderController {
     @GetMapping
     public List<OrderDTO> getAllOrders() {
         return orderDAO.getAllOrders();
+    }
+
+    @GetMapping("/{page}/{size}")
+    public Page<OrderDTO> getOrderPaging(@PathVariable("page") int page, @PathVariable("size") int size) {
+        return orderDAO.getAllOrders(PageRequest.of(page, size));
     }
 
     @PostMapping
