@@ -1,5 +1,6 @@
 package com.example.store.controller;
 
+import com.example.store.config.ManageCache;
 import com.example.store.dao.ProductDAO;
 import com.example.store.dto.ProductDTO;
 import com.example.store.mapper.ProductMapper;
@@ -35,6 +36,9 @@ class ProductControllerTest {
 
     @MockitoBean
     private ProductDAO productDAO;
+
+    @MockitoBean
+    private ManageCache manageCache;
 
     private ProductDTO productDTO;
 

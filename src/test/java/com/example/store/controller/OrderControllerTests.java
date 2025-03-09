@@ -1,5 +1,6 @@
 package com.example.store.controller;
 
+import com.example.store.config.ManageCache;
 import com.example.store.dao.CustomerDAO;
 import com.example.store.dao.OrderDAO;
 import com.example.store.dto.CustomerDTO;
@@ -45,14 +46,16 @@ class OrderControllerTests {
     @MockitoBean
     private CustomerDAO customerDAO;
 
+    @MockitoBean
+    private ManageCache manageCache;
+
     private OrderDTO orderDTO;
-    private OrderCustomerDTO orderCustomerDTO;
     private CustomerDTO customerDTO;
 
 
     @BeforeEach
     void setUp() {
-        orderCustomerDTO = new OrderCustomerDTO();
+        OrderCustomerDTO orderCustomerDTO = new OrderCustomerDTO();
         orderCustomerDTO.setId(1L);
         orderCustomerDTO.setName("John Doe");
 

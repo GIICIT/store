@@ -1,5 +1,6 @@
 package com.example.store.controller;
 
+import com.example.store.config.ManageCache;
 import com.example.store.dao.CustomerDAO;
 import com.example.store.dto.CustomerDTO;
 import com.example.store.entity.Customer;
@@ -41,6 +42,9 @@ class CustomerControllerTests {
 
     @MockitoBean
     private CustomerDAO customerDAO;
+
+    @MockitoBean
+    private ManageCache manageCache;
 
     private Customer customer;
 
