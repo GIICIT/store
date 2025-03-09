@@ -36,8 +36,8 @@ pipeline {
             steps {
                 script {
                     powershell """
-                        # Check if the container is already running, and stop and remove it if necessary
-                        if (docker ps -q -f name=store-service) {
+                        if (docker ps -aq -f name=store-service) {
+                            echo 'Stopping and removing existing container...'
                             docker stop store-service
                             docker rm -f store-service
                         }
@@ -58,8 +58,11 @@ pipeline {
         }
         always {
             script {
-                echo 'Cleaning up old Docker images...'
-                powershell "docker rmi store-service:latest"
+                echo 'Cleaning up old Docker images and containers...'
+                powershell """
+                    docker ps -aq -f status=exited | ForEach-Object { docker rm $_ }
+                    docker rmi store-service:latest
+                """
             }
         }
     }
