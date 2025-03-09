@@ -36,18 +36,5 @@ pipeline {
         }
     }
 
-    post {
-        success {
-            echo '✅ Build and container run successful!'
-        }
-        failure {
-            echo '❌ Build or container run failed!'
-        }
-        always {
-            script {
-                echo '🧹 Cleaning up old Docker images...'
-                sh "docker rmi store-service:latest || true"
-            }
-        }
-    }
+
 }
