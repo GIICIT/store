@@ -50,20 +50,18 @@ pipeline {
     }
 
     post {
-        success {
-            echo 'Build and container run successful!'
-        }
-        failure {
-            echo 'Build or container run failed!'
-        }
         always {
-            script {
-                echo 'Cleaning up old Docker images and containers...'
-                powershell """
-                    docker ps -aq -f status=exited | ForEach-Object { docker rm $_ }
-                    docker rmi store-service:latest
-                """
+            echo 'Cleaning up old Docker images and containers...'
+            try {
+                // Add debug logging
+                echo "Removing Docker containers and images"
+                sh 'docker ps -aq --filter name=store-service | xargs docker rm -f'
+                sh 'docker images -q --filter dangling=true | xargs docker rmi -f'
+            } catch (Exception e) {
+                echo "Error during cleanup: ${e.getMessage()}"
+                throw e  // Rethrow the error to fail the build
             }
         }
     }
+
 }
