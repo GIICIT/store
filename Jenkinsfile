@@ -11,7 +11,7 @@ pipeline {
         stage('Build Project') {
             steps {
                 script {
-                    sh './gradlew clean build'
+                    powershell './gradlew clean build'
                 }
             }
         }
@@ -19,7 +19,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh "docker build -t store-service:latest ."
+                    powershell "docker build -t store-service:latest ."
                 }
             }
         }
@@ -27,10 +27,10 @@ pipeline {
         stage('Run Docker Container') {
             steps {
                 script {
-                    sh "docker stop store-service || true"
-                    sh "docker rm store-service || true"
+                    powershell "docker stop store-service || true"
+                    powershell "docker rm store-service || true"
 
-                    sh "docker run -d --name store-service -p 9090:8080 -e 'SPRING_PROFILES_ACTIVE=local' store-service:latest"
+                    powershell "docker run -d --name store-service -p 9090:8080 -e 'SPRING_PROFILES_ACTIVE=local' store-service:latest"
                 }
             }
         }
@@ -46,7 +46,7 @@ pipeline {
         always {
             script {
                 echo 'Cleaning up old Docker images...'
-                sh "docker rmi store-service:latest || true"
+                powershell "docker rmi store-service:latest || true"
             }
         }
     }
