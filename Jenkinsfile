@@ -55,8 +55,8 @@ pipeline {
 
             script {
                 echo "Removing Docker containers and images"
-                sh 'docker ps -aq --filter name=store-service | xargs -r docker rm -f || true'
-                sh 'docker images -q --filter dangling=true | xargs -r docker rmi -f || true'
+                powershell 'docker ps -aq --filter name=store-service | xargs -r docker rm -f || true'
+                powershell 'docker images -q --filter dangling=true | xargs -r docker rmi -f || true'
             }
         }
     }
