@@ -8,7 +8,9 @@ import com.example.store.dto.OrderCustomerDTO;
 import com.example.store.dto.OrderDTO;
 import com.example.store.mapper.CustomerMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import lombok.RequiredArgsConstructor;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +53,6 @@ class OrderControllerTests {
 
     private OrderDTO orderDTO;
     private CustomerDTO customerDTO;
-
 
     @BeforeEach
     void setUp() {
@@ -97,7 +98,7 @@ class OrderControllerTests {
         when(orderDAO.getOrderByID(1L)).thenReturn(orderDTO);
 
         mockMvc.perform(get("/order/1"))
-                .andExpect(status().isOk())  // Expect HTTP 200 OK
+                .andExpect(status().isOk()) // Expect HTTP 200 OK
                 .andExpect(jsonPath("$.id").value(1L))
                 .andExpect(jsonPath("$.description").value("Test Order"))
                 .andExpect(jsonPath("$.customer.name").value("John Doe")); // Ensure customer is included
@@ -108,8 +109,7 @@ class OrderControllerTests {
         Page<OrderDTO> orderPage = new PageImpl<>(List.of(orderDTO));
         when(orderDAO.getAllOrders(PageRequest.of(0, 10))).thenReturn(orderPage);
 
-        mockMvc.perform(get("/order/0/10")
-                        .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/order/0/10").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content[0].description").value("Test Order"));
     }

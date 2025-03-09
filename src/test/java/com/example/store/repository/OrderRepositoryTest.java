@@ -7,6 +7,7 @@ import com.example.store.dto.ProductDTO;
 import com.example.store.mapper.CustomerMapper;
 import com.example.store.mapper.OrderMapper;
 import com.example.store.mapper.ProductMapper;
+
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -52,7 +53,8 @@ public class OrderRepositoryTest {
     @BeforeAll
     static void setupInfrastructure() {
         System.setProperty("TESTCONTAINERS_DB_HOST", postgres.getHost());
-        System.setProperty("TESTCONTAINERS_DB_PORT", postgres.getMappedPort(5432).toString());
+        System.setProperty(
+                "TESTCONTAINERS_DB_PORT", postgres.getMappedPort(5432).toString());
         System.setProperty("TESTCONTAINERS_DB_NAME", postgres.getDatabaseName());
         System.setProperty("TESTCONTAINERS_DB_USER", postgres.getUsername());
         System.setProperty("TESTCONTAINERS_DB_PASS", postgres.getPassword());
@@ -99,7 +101,6 @@ public class OrderRepositoryTest {
         assertThat(orderDTO.getProducts().get(2).getDescription()).isEqualTo("Digital Camera");
         assertThat(orderDTO.getProducts().get(3).getId()).isEqualTo(16);
         assertThat(orderDTO.getProducts().get(3).getDescription()).isEqualTo("Fitness Tracker");
-
     }
 
     private OrderDTO orderBuilder() {

@@ -4,6 +4,7 @@ import com.example.store.dao.CustomerDAO;
 import com.example.store.dao.CustomerDAOImpl;
 import com.example.store.dto.CustomerDTO;
 import com.example.store.mapper.CustomerMapper;
+
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -38,7 +39,8 @@ public class CustomerRepositoryTest {
     @BeforeAll
     static void setupInfrastructure() {
         System.setProperty("TESTCONTAINERS_DB_HOST", postgres.getHost());
-        System.setProperty("TESTCONTAINERS_DB_PORT", postgres.getMappedPort(5432).toString());
+        System.setProperty(
+                "TESTCONTAINERS_DB_PORT", postgres.getMappedPort(5432).toString());
         System.setProperty("TESTCONTAINERS_DB_NAME", postgres.getDatabaseName());
         System.setProperty("TESTCONTAINERS_DB_USER", postgres.getUsername());
         System.setProperty("TESTCONTAINERS_DB_PASS", postgres.getPassword());

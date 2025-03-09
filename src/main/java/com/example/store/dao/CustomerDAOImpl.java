@@ -5,7 +5,9 @@ import com.example.store.entity.Customer;
 import com.example.store.mapper.CustomerMapper;
 import com.example.store.repository.CustomerRepository;
 import com.example.store.repository.CustomerSpecifications;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
@@ -32,7 +34,8 @@ public class CustomerDAOImpl implements CustomerDAO {
 
     @Override
     public CustomerDTO createCustomer(CustomerDTO customerDTO) {
-        return customerMapper.customerToCustomerDTO(customerRepository.save(customerMapper.customerDTOToCustomer(customerDTO)));
+        return customerMapper.customerToCustomerDTO(
+                customerRepository.save(customerMapper.customerDTOToCustomer(customerDTO)));
     }
 
     @Override

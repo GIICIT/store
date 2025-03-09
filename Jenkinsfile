@@ -16,6 +16,14 @@ pipeline {
             }
         }
 
+        stage('Run Tests') {
+                    steps {
+                        script {
+                            powershell './gradlew test'
+                        }
+                    }
+                }
+
         stage('Build Docker Image') {
             steps {
                 script {

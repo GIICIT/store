@@ -1,6 +1,7 @@
 package com.example.store.entity;
 
 import jakarta.persistence.*;
+
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
@@ -26,4 +27,3 @@ public class Product {
     @ManyToMany(mappedBy = "products")
     private List<Order> orders = new ArrayList<>();
 }
-

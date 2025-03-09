@@ -6,6 +6,7 @@ import com.example.store.dto.ProductOrderDTO;
 import com.example.store.entity.Customer;
 import com.example.store.entity.Order;
 import com.example.store.entity.Product;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -38,6 +39,10 @@ public interface OrderMapper {
 
     @Named("mapProducts")
     static List<Product> mapProducts(List<ProductOrderDTO> dtos) {
-        return dtos != null ? dtos.stream().map(dto -> new Product(dto.getId(), dto.getDescription())).collect(Collectors.toList()) : null;
+        return dtos != null
+                ? dtos.stream()
+                        .map(dto -> new Product(dto.getId(), dto.getDescription()))
+                        .collect(Collectors.toList())
+                : null;
     }
 }

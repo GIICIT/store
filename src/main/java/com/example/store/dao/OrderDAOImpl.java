@@ -9,7 +9,9 @@ import com.example.store.mapper.OrderMapper;
 import com.example.store.repository.CustomerRepository;
 import com.example.store.repository.OrderRepository;
 import com.example.store.repository.ProductRepository;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
@@ -38,12 +40,12 @@ public class OrderDAOImpl implements OrderDAO {
 
     @Override
     public OrderDTO createOrder(OrderDTO orderDTO) {
-        Customer customer = customerRepository.findById(orderDTO.getCustomer().getId())
+        Customer customer = customerRepository
+                .findById(orderDTO.getCustomer().getId())
                 .orElseThrow(() -> new RuntimeException("Customer not found"));
 
         List<Product> products = productRepository.findAllById(
-                orderDTO.getProducts().stream().map(ProductOrderDTO::getId).toList()
-        );
+                orderDTO.getProducts().stream().map(ProductOrderDTO::getId).toList());
 
         if (products.size() != orderDTO.getProducts().size()) {
             throw new RuntimeException("One or more products not found");

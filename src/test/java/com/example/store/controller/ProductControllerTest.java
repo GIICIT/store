@@ -5,7 +5,9 @@ import com.example.store.dao.ProductDAO;
 import com.example.store.dto.ProductDTO;
 import com.example.store.mapper.ProductMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import lombok.RequiredArgsConstructor;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,8 +55,7 @@ class ProductControllerTest {
     void testGetAllProducts() throws Exception {
         when(productDAO.getAllProducts()).thenReturn(List.of(productDTO));
 
-        mockMvc.perform(get("/products")
-                        .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/products").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].description").value("Test Product"));
     }
@@ -63,8 +64,7 @@ class ProductControllerTest {
     void testGetProductById() throws Exception {
         when(productDAO.getProductById(1L)).thenReturn(productDTO);
 
-        mockMvc.perform(get("/products/1")
-                        .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/products/1").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.description").value("Test Product"));
     }

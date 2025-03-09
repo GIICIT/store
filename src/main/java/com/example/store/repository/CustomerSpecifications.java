@@ -1,6 +1,7 @@
 package com.example.store.repository;
 
 import com.example.store.entity.Customer;
+
 import org.springframework.data.jpa.domain.Specification;
 
 public class CustomerSpecifications {

@@ -24,12 +24,13 @@ public class CacheConfig {
     @Bean
     public CacheManager cacheManager(RedisTemplate<String, Object> redisTemplate) {
         return RedisCacheManager.builder(redisConnectionFactory)
-                .cacheDefaults(redisCacheConfiguration())  // Apply cache configuration here
+                .cacheDefaults(redisCacheConfiguration())
                 .build();
     }
 
     private RedisCacheConfiguration redisCacheConfiguration() {
         return RedisCacheConfiguration.defaultCacheConfig()
-                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
+                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(
+                        new GenericJackson2JsonRedisSerializer()));
     }
 }
