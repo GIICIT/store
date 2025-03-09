@@ -1,9 +1,7 @@
 package com.example.store.dao;
 
 import com.example.store.dto.CustomerDTO;
-import com.example.store.dto.OrderDTO;
 import com.example.store.entity.Customer;
-import com.example.store.entity.Order;
 import com.example.store.mapper.CustomerMapper;
 import com.example.store.repository.CustomerRepository;
 import com.example.store.repository.CustomerSpecifications;
@@ -12,10 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Component
 @RequiredArgsConstructor
@@ -61,5 +56,12 @@ public class CustomerDAOImpl implements CustomerDAO {
         }
 
         return customerMapper.customersToCustomerDTOs(finalResults);
+    }
+
+    @Override
+    public CustomerDTO findById(Long id) {
+        Optional<Customer> customer = customerRepository.findById(id);
+        return customer.map(CustomerMapper.INSTANCE::customerToCustomerDTO)
+                .orElseThrow(() -> new RuntimeException("Customer not found"));
     }
 }

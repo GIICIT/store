@@ -28,8 +28,9 @@ public class ProductDAOImpl implements ProductDAO {
     }
 
     @Override
-    public ProductDTO getAllProductById(Long id) {
-        Optional<Product> order = productRepository.findById(id);
-        return order.map(productMapper::productToProductDTO).orElse(new ProductDTO());
+    public ProductDTO getProductById(Long id) {
+        return productRepository.findById(id)
+                .map(productMapper::productToProductDTO)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
     }
 }

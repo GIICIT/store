@@ -9,5 +9,5 @@ public interface ProductDAO {
 
     ProductDTO createProduct(ProductDTO productDTO);
 
-    ProductDTO getAllProductById(Long id);
+    ProductDTO getProductById(Long id);
 }

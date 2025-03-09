@@ -14,4 +14,6 @@ public interface CustomerDAO {
     CustomerDTO createCustomer(CustomerDTO customerDTO);
 
     List<CustomerDTO> findCustomersByName(String name);
+
+    CustomerDTO findById(Long id);
 }

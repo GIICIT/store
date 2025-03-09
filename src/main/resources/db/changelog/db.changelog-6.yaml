@@ -1,7 +1,7 @@
 databaseChangeLog:
   - changeSet:
-      id: 5-data
+      id: 3-data
       author: wallacevanzyl
       changes:
         - sqlFile:
-            path: db/changelog/product-data.sql
+            path: db/changelog/set-max-id.sql

@@ -22,7 +22,7 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public ProductDTO getAllProductById(@PathVariable Long id) {
-        return productDAO.getAllProductById(id);
+        return productDAO.getProductById(id);
     }
 
     @PostMapping
