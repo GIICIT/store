@@ -8,6 +8,14 @@ pipeline {
             }
         }
 
+        stage('Apply Spotless') {
+                    steps {
+                        script {
+                            powershell './gradlew spotlessApply'
+                        }
+                    }
+                }
+
         stage('Build Project') {
             steps {
                 script {

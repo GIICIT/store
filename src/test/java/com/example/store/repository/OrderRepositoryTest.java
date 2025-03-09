@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -50,14 +52,11 @@ public class OrderRepositoryTest {
             .withUsername("test_user")
             .withPassword("test_pass");
 
-    @BeforeAll
-    static void setupInfrastructure() {
-        System.setProperty("TESTCONTAINERS_DB_HOST", postgres.getHost());
-        System.setProperty(
-                "TESTCONTAINERS_DB_PORT", postgres.getMappedPort(5432).toString());
-        System.setProperty("TESTCONTAINERS_DB_NAME", postgres.getDatabaseName());
-        System.setProperty("TESTCONTAINERS_DB_USER", postgres.getUsername());
-        System.setProperty("TESTCONTAINERS_DB_PASS", postgres.getPassword());
+    @DynamicPropertySource
+    static void registerPgProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", postgres::getJdbcUrl);
+        registry.add("spring.datasource.username", postgres::getUsername);
+        registry.add("spring.datasource.password", postgres::getPassword);
     }
 
     @BeforeEach
