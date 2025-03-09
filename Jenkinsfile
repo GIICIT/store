@@ -9,12 +9,12 @@ pipeline {
         }
 
         stage('Apply Spotless') {
-                    steps {
-                        script {
-                            powershell './gradlew spotlessApply'
-                        }
-                    }
+            steps {
+                script {
+                    powershell './gradlew spotlessApply'
                 }
+            }
+        }
 
         stage('Build Project') {
             steps {
@@ -25,12 +25,12 @@ pipeline {
         }
 
         stage('Run Tests') {
-                    steps {
-                        script {
-                            powershell './gradlew test'
-                        }
-                    }
+            steps {
+                script {
+                    powershell './gradlew test'
                 }
+            }
+        }
 
         stage('Build Docker Image') {
             steps {
@@ -43,8 +43,8 @@ pipeline {
         stage('Run Docker Container') {
             steps {
                 script {
-                    powershell "docker stop store-service || true"
-                    powershell "docker rm store-service || true"
+                    powershell "docker stop store-service -or $true"
+                    powershell "docker rm store-service -or $true"
 
                     powershell "docker run -d --name store-service -p 9090:8080 -e 'SPRING_PROFILES_ACTIVE=local' store-service:latest"
                 }
@@ -62,7 +62,7 @@ pipeline {
         always {
             script {
                 echo 'Cleaning up old Docker images...'
-                powershell "docker rmi store-service:latest || true"
+                powershell "docker rmi store-service:latest -or $true"
             }
         }
     }
