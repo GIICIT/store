@@ -52,14 +52,11 @@ pipeline {
     post {
         always {
             echo 'Cleaning up old Docker images and containers...'
-            try {
-                // Add debug logging
+
+            script {
                 echo "Removing Docker containers and images"
-                sh 'docker ps -aq --filter name=store-service | xargs docker rm -f'
-                sh 'docker images -q --filter dangling=true | xargs docker rmi -f'
-            } catch (Exception e) {
-                echo "Error during cleanup: ${e.getMessage()}"
-                throw e  // Rethrow the error to fail the build
+                sh 'docker ps -aq --filter name=store-service | xargs -r docker rm -f || true'
+                sh 'docker images -q --filter dangling=true | xargs -r docker rmi -f || true'
             }
         }
     }
