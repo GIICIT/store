@@ -49,16 +49,4 @@ pipeline {
 
     }
 
-    post {
-        always {
-            echo 'Cleaning up old Docker images and containers...'
-
-            script {
-                echo "Removing Docker containers and images"
-                powershell 'docker ps -aq --filter name=store-service | xargs -r docker rm -f || true'
-                powershell 'docker images -q --filter dangling=true | xargs -r docker rmi -f || true'
-            }
-        }
-    }
-
 }
