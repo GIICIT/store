@@ -43,9 +43,7 @@ pipeline {
         stage('Run Docker Container') {
             steps {
                 script {
-                    powershell "docker stop store-service -or $true"
-                    powershell "docker rm store-service -or $true"
-
+                    powershell "docker stop store-service; docker rm store-service"
                     powershell "docker run -d --name store-service -p 9090:8080 -e 'SPRING_PROFILES_ACTIVE=local' store-service:latest"
                 }
             }
@@ -62,7 +60,7 @@ pipeline {
         always {
             script {
                 echo 'Cleaning up old Docker images...'
-                powershell "docker rmi store-service:latest -or $true"
+                powershell "docker rmi store-service:latest; true"
             }
         }
     }
