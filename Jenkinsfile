@@ -60,7 +60,7 @@ pipeline {
         always {
             script {
                 echo 'Cleaning up old Docker images...'
-                powershell "docker rmi store-service:latest; true"
+                powershell "docker rmi store-service:latest"
             }
         }
     }
