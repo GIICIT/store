@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git 'https://github.com/GIICIT/store.git'
+                git branch: 'develop', url: 'https://github.com/GIICIT/store.git'
             }
         }
 
