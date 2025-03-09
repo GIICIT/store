@@ -1,8 +1,10 @@
 package com.example.store.controller;
 
+import com.example.store.config.ManageCache;
 import com.example.store.dao.ProductDAO;
 import com.example.store.dto.ProductDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +17,9 @@ public class ProductController {
 
     private final ProductDAO productDAO;
 
+    private final ManageCache manageCache;
+
+    @Cacheable(value = "store:products", key = "'allProducts'")
     @GetMapping
     public List<ProductDTO> getAllProducts() {
         return productDAO.getAllProducts();
@@ -27,7 +32,9 @@ public class ProductController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ProductDTO createOrder(@RequestBody ProductDTO productDTO) {
-        return productDAO.createProduct(productDTO);
+    public ProductDTO createProduct(@RequestBody ProductDTO productDTO) {
+        ProductDTO product = productDAO.createProduct(productDTO);
+        manageCache.updateProducts();
+        return product;
     }
 }

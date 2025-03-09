@@ -59,20 +59,20 @@ public class OrderRepositoryTest {
     }
 
     @BeforeEach
-    void setup(){
+    void setup() {
         orderDAO = new OrderDAOImpl(orderRepository, customerRepository, productRepository, OrderMapper.INSTANCE);
         customerDAO = new CustomerDAOImpl(customerRepository, CustomerMapper.INSTANCE);
         productDAO = new ProductDAOImpl(productRepository, ProductMapper.INSTANCE);
     }
 
     @Test
-    void when_find_all_orders(){
+    void when_find_all_orders() {
         List<OrderDTO> orders = orderDAO.getAllOrders();
         assertThat(orders.size()).isEqualTo(10000);
     }
 
     @Test
-    void when_find_order_by_id(){
+    void when_find_order_by_id() {
         OrderDTO order = orderDAO.getOrderByID(1L);
         assertThat(order.getId()).isEqualTo(1L);
         assertThat(order.getDescription()).isEqualTo("Handcrafted Soft Chair");
@@ -81,7 +81,7 @@ public class OrderRepositoryTest {
     }
 
     @Test
-    void when_create_order(){
+    void when_create_order() {
         OrderDTO orderDTO = orderDAO.createOrder(orderBuilder());
         assertThat(orderDTO.getId()).isEqualTo(10001L);
         assertThat(orderDTO.getDescription()).isEqualTo("Test Order");
@@ -102,7 +102,7 @@ public class OrderRepositoryTest {
 
     }
 
-    private OrderDTO orderBuilder(){
+    private OrderDTO orderBuilder() {
         OrderDTO orderDTO = new OrderDTO();
         orderDTO.setDescription("Test Order");
         orderDTO.setCustomer(CustomerMapper.INSTANCE.customerDTOToOrderCustomerDTO(getCustomer()));
@@ -110,16 +110,16 @@ public class OrderRepositoryTest {
         return orderDTO;
     }
 
-    private CustomerDTO getCustomer(){
+    private CustomerDTO getCustomer() {
         return customerDAO.findById(23L);
     }
 
-    private List<ProductDTO> getProduct(){
+    private List<ProductDTO> getProduct() {
         List<ProductDTO> products = new ArrayList<>();
         products.add(productDAO.getProductById(12L));
         products.add(productDAO.getProductById(13L));
         products.add(productDAO.getProductById(23L));
         products.add(productDAO.getProductById(16L));
-         return products;
+        return products;
     }
 }

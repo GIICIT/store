@@ -25,7 +25,7 @@ public class CustomerDAOImpl implements CustomerDAO {
     }
 
     @Override
-    public Page<CustomerDTO> getAllOrders(Pageable pageable) {
+    public Page<CustomerDTO> getAllCustomersPaging(Pageable pageable) {
         Page<Customer> ordersPage = customerRepository.findAll(pageable);
         return ordersPage.map(customerMapper::customerToCustomerDTO);
     }

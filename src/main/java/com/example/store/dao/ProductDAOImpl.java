@@ -1,14 +1,12 @@
 package com.example.store.dao;
 
 import com.example.store.dto.ProductDTO;
-import com.example.store.entity.Product;
 import com.example.store.mapper.ProductMapper;
 import com.example.store.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor

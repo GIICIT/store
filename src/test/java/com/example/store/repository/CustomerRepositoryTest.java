@@ -45,24 +45,24 @@ public class CustomerRepositoryTest {
     }
 
     @BeforeEach
-    void setup(){
+    void setup() {
         customerDAO = new CustomerDAOImpl(customerRepository, CustomerMapper.INSTANCE);
     }
 
     @Test
-    void when_find_all_customers(){
+    void when_find_all_customers() {
         List<CustomerDTO> customers = customerDAO.getAllCustomers();
         assertThat(customers.size()).isEqualTo(100);
     }
 
     @Test
-    void when_save_customer(){
+    void when_save_customer() {
         CustomerDTO customer = customerDAO.createCustomer(customerBuilder("Test Customer 2"));
         assertThat(customer.getName()).isEqualTo("Test Customer 2");
     }
 
     @Test
-    void when_search_customer_by_name(){
+    void when_search_customer_by_name() {
         customerDAO.createCustomer(customerBuilder("Jessy James Wilson"));
         customerDAO.createCustomer(customerBuilder("James Wilson"));
         customerDAO.createCustomer(customerBuilder("John Doe"));
@@ -81,7 +81,7 @@ public class CustomerRepositoryTest {
         assertThat(customers3.size()).isEqualTo(2);
     }
 
-    private CustomerDTO customerBuilder(String name){
+    private CustomerDTO customerBuilder(String name) {
         CustomerDTO customerDTO = new CustomerDTO();
         customerDTO.setName(name);
         return customerDTO;

@@ -14,10 +14,12 @@ public interface CustomerMapper {
 
     CustomerMapper INSTANCE = Mappers.getMapper(CustomerMapper.class);
 
-    @Mapping(target = "orders", ignore = true) // Adjust mapping as needed
+    @Mapping(target = "orders", ignore = true)
+        // Adjust mapping as needed
     CustomerDTO customerToCustomerDTO(Customer customer);
 
-    @Mapping(target = "orders", ignore = true) // Adjust mapping as needed
+    @Mapping(target = "orders", ignore = true)
+        // Adjust mapping as needed
     Customer customerDTOToCustomer(CustomerDTO customerDTO);
 
     List<CustomerDTO> customersToCustomerDTOs(List<Customer> customers);

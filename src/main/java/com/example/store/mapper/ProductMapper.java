@@ -19,7 +19,8 @@ public interface ProductMapper {
     @Mapping(target = "orderIds", source = "orders", qualifiedByName = "mapOrderIds")
     ProductDTO productToProductDTO(Product product);
 
-    @Mapping(target = "orders", ignore = true) // Add this
+    @Mapping(target = "orders", ignore = true)
+        // Add this
     Product productDTOToProduct(ProductDTO productDTO);
 
     List<ProductDTO> productsToProductDTOs(List<Product> products);

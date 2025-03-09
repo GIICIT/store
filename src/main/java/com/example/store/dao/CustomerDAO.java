@@ -9,7 +9,7 @@ import java.util.List;
 public interface CustomerDAO {
     List<CustomerDTO> getAllCustomers();
 
-    Page<CustomerDTO> getAllOrders(Pageable pageable);
+    Page<CustomerDTO> getAllCustomersPaging(Pageable pageable);
 
     CustomerDTO createCustomer(CustomerDTO customerDTO);
 
