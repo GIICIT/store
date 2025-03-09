@@ -42,7 +42,6 @@ jobs:
         run: |
           docker run -d --name store-service -p 9090:8080 -e 'SPRING_PROFILES_ACTIVE=local' store-service:latest
 
-    post:
-      always:
-        - name: Clean up Docker image
-          run: docker rmi store-service:latest
+    finally:
+      - name: Clean up Docker image
+        run: docker rmi store-service:latest
