@@ -19,9 +19,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: Set up Docker
-        uses: docker/setup-buildx-action@v2
-
       - name: Build project
         run: ./gradlew clean build
 
@@ -29,24 +26,17 @@ jobs:
         run: ./gradlew test
 
       - name: Build Docker image
-        run: docker build -t store-service:latest .
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/store-service:latest .
 
-      - name: Stop and remove existing Docker container
-        run: |
-          if [ "$(docker ps -q -f name=store-service)" ]; then
-            docker stop store-service
-            docker rm store-service
-          fi
+      - name: Log in to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Run Docker container
-        run: |
-          docker run -d --name store-service -p 9090:8080 -e 'SPRING_PROFILES_ACTIVE=local' store-service:latest
+      - name: Push Docker image to DockerHub
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/store-service:latest
 
-      - name: Clean up Docker container and image
+      - name: Clean up Docker image
         if: always()
-        run: |
-          if [ "$(docker ps -q -f name=store-service)" ]; then
-            docker stop store-service
-            docker rm store-service
-          fi
-          docker rmi store-service:latest || true  # Force the image removal if needed
+        run: docker rmi store-service:latest || true
