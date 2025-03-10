@@ -2,6 +2,7 @@ package com.example.store.dao;
 
 import com.example.store.dto.CustomerDTO;
 import com.example.store.entity.Customer;
+import com.example.store.exception.CustomerNotFoundException;
 import com.example.store.mapper.CustomerMapper;
 import com.example.store.repository.CustomerRepository;
 import com.example.store.repository.CustomerSpecifications;
@@ -65,6 +66,6 @@ public class CustomerDAOImpl implements CustomerDAO {
     public CustomerDTO findById(Long id) {
         Optional<Customer> customer = customerRepository.findById(id);
         return customer.map(CustomerMapper.INSTANCE::customerToCustomerDTO)
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
+                .orElseThrow(() -> new CustomerNotFoundException("Customer not found"));
     }
 }

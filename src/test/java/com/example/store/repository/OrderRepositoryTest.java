@@ -61,9 +61,9 @@ public class OrderRepositoryTest {
 
     @BeforeEach
     void setup() {
-        orderDAO = new OrderDAOImpl(orderRepository, customerRepository, productRepository, OrderMapper.INSTANCE);
         customerDAO = new CustomerDAOImpl(customerRepository, CustomerMapper.INSTANCE);
         productDAO = new ProductDAOImpl(productRepository, ProductMapper.INSTANCE);
+        orderDAO = new OrderDAOImpl(orderRepository, OrderMapper.INSTANCE, CustomerMapper.INSTANCE, customerDAO, productDAO, ProductMapper.INSTANCE);
     }
 
     @Test
@@ -96,10 +96,10 @@ public class OrderRepositoryTest {
         assertThat(orderDTO.getProducts().get(0).getDescription()).isEqualTo("Noise Cancelling Headphones");
         assertThat(orderDTO.getProducts().get(1).getId()).isEqualTo(13);
         assertThat(orderDTO.getProducts().get(1).getDescription()).isEqualTo("Gaming Mouse Pad");
-        assertThat(orderDTO.getProducts().get(2).getId()).isEqualTo(23);
-        assertThat(orderDTO.getProducts().get(2).getDescription()).isEqualTo("Digital Camera");
-        assertThat(orderDTO.getProducts().get(3).getId()).isEqualTo(16);
-        assertThat(orderDTO.getProducts().get(3).getDescription()).isEqualTo("Fitness Tracker");
+        assertThat(orderDTO.getProducts().get(2).getId()).isEqualTo(16);
+        assertThat(orderDTO.getProducts().get(2).getDescription()).isEqualTo("Fitness Tracker");
+        assertThat(orderDTO.getProducts().get(3).getId()).isEqualTo(23);
+        assertThat(orderDTO.getProducts().get(3).getDescription()).isEqualTo("Digital Camera");
     }
 
     private OrderDTO orderBuilder() {
