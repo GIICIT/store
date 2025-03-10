@@ -27,6 +27,8 @@ public interface ProductMapper {
 
     List<ProductOrderDTO> productToProductOrderDTO(List<ProductDTO> product);
 
+    List<Product> productDTOsToProducts(List<ProductDTO> productDTOs);
+
     @Named("mapOrderIds")
     static List<Long> mapOrderIds(List<Order> orders) {
         return orders != null ? orders.stream().map(Order::getId).collect(Collectors.toList()) : null;

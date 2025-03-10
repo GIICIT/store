@@ -1,14 +1,15 @@
 package com.example.store.dao;
 
+import com.example.store.dto.CustomerDTO;
 import com.example.store.dto.OrderDTO;
+import com.example.store.dto.ProductDTO;
 import com.example.store.dto.ProductOrderDTO;
-import com.example.store.entity.Customer;
 import com.example.store.entity.Order;
-import com.example.store.entity.Product;
+import com.example.store.exception.ProductNotFoundException;
+import com.example.store.mapper.CustomerMapper;
 import com.example.store.mapper.OrderMapper;
-import com.example.store.repository.CustomerRepository;
+import com.example.store.mapper.ProductMapper;
 import com.example.store.repository.OrderRepository;
-import com.example.store.repository.ProductRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,9 +24,11 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class OrderDAOImpl implements OrderDAO {
     private final OrderRepository orderRepository;
-    private final CustomerRepository customerRepository;
-    private final ProductRepository productRepository;
     private final OrderMapper orderMapper;
+    private final CustomerMapper customerMapper;
+    private final CustomerDAO customerDAO;
+    private final ProductDAO productDAO;
+    private final ProductMapper productMapper;
 
     @Override
     public List<OrderDTO> getAllOrders() {
@@ -40,23 +43,20 @@ public class OrderDAOImpl implements OrderDAO {
 
     @Override
     public OrderDTO createOrder(OrderDTO orderDTO) {
-        Customer customer = customerRepository
-                .findById(orderDTO.getCustomer().getId())
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
+        CustomerDTO customerDTO = customerDAO.findById(orderDTO.getCustomer().getId());
 
-        List<Product> products = productRepository.findAllById(
+        List<ProductDTO> products = productDAO.getProductsByIds(
                 orderDTO.getProducts().stream().map(ProductOrderDTO::getId).toList());
 
         if (products.size() != orderDTO.getProducts().size()) {
-            throw new RuntimeException("One or more products not found");
+            throw new ProductNotFoundException("One or more products not found");
         }
 
-        Order order = new Order();
-        order.setDescription(orderDTO.getDescription());
-        order.setCustomer(customer);
-        order.setProducts(products);
+        Order order = orderMapper.orderDTOToOrder(orderDTO);
+        order.setCustomer(customerMapper.customerDTOToCustomer(customerDTO));
+        order.setProducts(productMapper.productDTOsToProducts(products));
 
-        return orderMapper.orderToOrderDTO(orderRepository.save(orderMapper.orderDTOToOrder(orderDTO)));
+        return orderMapper.orderToOrderDTO(orderRepository.save(order));
     }
 
     @Override

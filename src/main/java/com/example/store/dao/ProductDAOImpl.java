@@ -1,6 +1,7 @@
 package com.example.store.dao;
 
 import com.example.store.dto.ProductDTO;
+import com.example.store.entity.Product;
 import com.example.store.mapper.ProductMapper;
 import com.example.store.repository.ProductRepository;
 
@@ -33,5 +34,11 @@ public class ProductDAOImpl implements ProductDAO {
                 .findById(id)
                 .map(productMapper::productToProductDTO)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
+    }
+
+    @Override
+    public List<ProductDTO> getProductsByIds(List<Long> ids) {
+        List<Product> products = productRepository.findAllById(ids);
+        return productMapper.productsToProductDTOs(products);
     }
 }

@@ -24,7 +24,7 @@ public interface OrderMapper {
 
     List<OrderDTO> ordersToOrderDTOs(List<Order> orders);
 
-    OrderCustomerDTO orderToOrderCustomerDTO(Customer customer);
+    OrderCustomerDTO customerToOrderCustomerDTO(Customer customer);
 
     ProductOrderDTO orderToOrderProductDTO(Product Product);
 

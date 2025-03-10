@@ -10,4 +10,6 @@ public interface ProductDAO {
     ProductDTO createProduct(ProductDTO productDTO);
 
     ProductDTO getProductById(Long id);
+
+    List<ProductDTO> getProductsByIds(List<Long> ids);
 }
