@@ -63,7 +63,13 @@ public class OrderRepositoryTest {
     void setup() {
         customerDAO = new CustomerDAOImpl(customerRepository, CustomerMapper.INSTANCE);
         productDAO = new ProductDAOImpl(productRepository, ProductMapper.INSTANCE);
-        orderDAO = new OrderDAOImpl(orderRepository, OrderMapper.INSTANCE, CustomerMapper.INSTANCE, customerDAO, productDAO, ProductMapper.INSTANCE);
+        orderDAO = new OrderDAOImpl(
+                orderRepository,
+                OrderMapper.INSTANCE,
+                CustomerMapper.INSTANCE,
+                customerDAO,
+                productDAO,
+                ProductMapper.INSTANCE);
     }
 
     @Test

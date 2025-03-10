@@ -41,8 +41,8 @@ public interface OrderMapper {
     static List<Product> mapProducts(List<ProductOrderDTO> dtos) {
         return dtos != null
                 ? dtos.stream()
-                .map(dto -> new Product(dto.getId(), dto.getDescription()))
-                .collect(Collectors.toList())
+                        .map(dto -> new Product(dto.getId(), dto.getDescription()))
+                        .collect(Collectors.toList())
                 : null;
     }
 }

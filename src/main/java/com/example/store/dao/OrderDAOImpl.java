@@ -4,17 +4,12 @@ import com.example.store.dto.CustomerDTO;
 import com.example.store.dto.OrderDTO;
 import com.example.store.dto.ProductDTO;
 import com.example.store.dto.ProductOrderDTO;
-import com.example.store.entity.Customer;
 import com.example.store.entity.Order;
-import com.example.store.entity.Product;
-import com.example.store.exception.CustomerNotFoundException;
 import com.example.store.exception.ProductNotFoundException;
 import com.example.store.mapper.CustomerMapper;
 import com.example.store.mapper.OrderMapper;
 import com.example.store.mapper.ProductMapper;
-import com.example.store.repository.CustomerRepository;
 import com.example.store.repository.OrderRepository;
-import com.example.store.repository.ProductRepository;
 
 import lombok.RequiredArgsConstructor;
 

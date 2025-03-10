@@ -26,7 +26,7 @@ public interface ProductMapper {
     List<ProductDTO> productsToProductDTOs(List<Product> products);
 
     List<ProductOrderDTO> productToProductOrderDTO(List<ProductDTO> product);
-    
+
     List<Product> productDTOsToProducts(List<ProductDTO> productDTOs);
 
     @Named("mapOrderIds")
