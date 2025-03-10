@@ -10,6 +10,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,12 +26,14 @@ public class CustomerController {
 
     @Cacheable(value = "store:customers", key = "'allCustomers'")
     @GetMapping
+    @PreAuthorize("hasRole('user')")
     public List<CustomerDTO> getAllCustomers() {
         return customerDAO.getAllCustomers();
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole('admin')")
     public CustomerDTO createCustomer(@RequestBody CustomerDTO customerDTO) {
         CustomerDTO customer = customerDAO.createCustomer(customerDTO);
         manageCache.updateCustomers();
@@ -39,11 +42,13 @@ public class CustomerController {
 
     @GetMapping("/{name}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('user')")
     public List<CustomerDTO> findCustomerByName(@PathVariable String name) {
         return customerDAO.findCustomersByName(name);
     }
 
     @GetMapping("/{page}/{size}")
+    @PreAuthorize("hasRole('user')")
     public Page<CustomerDTO> getOrderPaging(@PathVariable("page") int page, @PathVariable("size") int size) {
         return customerDAO.getAllCustomersPaging(PageRequest.of(page, size));
     }
