@@ -78,3 +78,28 @@ Think carefully about the impact on performance when implementing your changes
 The specifications of the tasks have been left deliberately vague. You will be required to exercise judgement about what to deliver - in a real world environment, you would clarify these points in refinement, but since this is a project to be completed without interaction, feel free to make assumptions - but be prepared to defend them when asked.
 There's no CI pipeline associated with this project, but in reality there would be. Consider the things that you would expect that pipeline to verify before allowing your code to be promoted
 Feel free to refactor the codebase if necessary. Bad choices were deliberately made when creating this project.
+
+# Updates
+1. Running the application using:
+```shell
+docker-compose up -d
+```
+This creates the following:
+* A db called `store`
+* A `redis` cache for caching
+* A `Keycloak` server for authentication
+* A db called `keycloak-db` for Keycloak server
+
+A postman collection and environment is provided in the `postman` folder. You can import the collection and environment to test the endpoints.
+This is useful for retrieving the access token and using it to access the endpoints. 
+The collection is set up to automatically set the token when the JWT Role Based Token for a user has been executed.
+You only need to execute the JWT Role Based Token for a user to get the token and then execute the api you want.
+No need to copy and paste tokens
+
+There are only two users
+* `admin` with password `admin` - has access to all endpoints
+* `user` with password `user` - has access to only the GET endpoints
+
+`Jenkins CI` and `GitHub Workflows` are provided
+Updated `OpenAPI_v1.yaml` to include the new endpoints
+
