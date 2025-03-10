@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://${TESTCONTAINERS_DB_HOST:localhost}:${TESTCONTAINERS_DB_PORT:5432}/${TESTCONTAINERS_DB_NAME:test_db}
+    username: ${TESTCONTAINERS_DB_USER:test_user}
+    password: ${TESTCONTAINERS_DB_PASS:test_pass}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+  liquibase:
+    enabled: true
+    change-log: classpath:/db/changelog/db.changelog-master.yaml
+    parameters:
+      liquibase.searchPath: classpath:/db/changelog

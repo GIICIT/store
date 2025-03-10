@@ -11,19 +11,19 @@ import java.util.List;
 @Entity
 @Data
 @RequiredArgsConstructor
-public class Customer {
+public class Product {
 
-    public Customer(Long id, String name) {
+    public Product(Long id, String description) {
         this.id = id;
-        this.name = name;
+        this.description = description;
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String description;
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "products")
     private List<Order> orders = new ArrayList<>();
 }

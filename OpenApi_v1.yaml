@@ -1,0 +1,307 @@
+openapi: 3.0.0
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+  - url: http://localhost:8081
+    description: Generated server url
+paths:
+  /products:
+    get:
+      tags:
+        - product-controller
+      operationId: getAllProducts
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductDTO'
+    post:
+      tags:
+        - product-controller
+      operationId: createProduct
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductDTO'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProductDTO'
+  /order:
+    get:
+      tags:
+        - order-controller
+      operationId: getAllOrders
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderDTO'
+    post:
+      tags:
+        - order-controller
+      operationId: createOrder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderDTO'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/OrderDTO'
+  /customer:
+    get:
+      tags:
+        - customer-controller
+      operationId: getAllCustomers
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CustomerDTO'
+    post:
+      tags:
+        - customer-controller
+      operationId: createCustomer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerDTO'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CustomerDTO'
+  /products/{id}:
+    get:
+      tags:
+        - product-controller
+      operationId: getAllProductById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ProductDTO'
+  /order/{page}/{size}:
+    get:
+      tags:
+        - order-controller
+      operationId: getOrderPaging
+      parameters:
+        - name: page
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: size
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PagedModelOrderDTO'
+  /order/{id}:
+    get:
+      tags:
+        - order-controller
+      operationId: getOrderByID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/OrderDTO'
+  /customer/{page}/{size}:
+    get:
+      tags:
+        - customer-controller
+      operationId: getOrderPaging_1
+      parameters:
+        - name: page
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: size
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PagedModelCustomerDTO'
+  /customer/{name}:
+    get:
+      tags:
+        - customer-controller
+      operationId: findCustomerByName
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CustomerDTO'
+components:
+  schemas:
+    ProductDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        description:
+          type: string
+        orderIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+    OrderCustomerDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+    OrderDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        description:
+          type: string
+        customer:
+          $ref: '#/components/schemas/OrderCustomerDTO'
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductOrderDTO'
+    ProductOrderDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        description:
+          type: string
+    CustomerDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerOrderDTO'
+    CustomerOrderDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        description:
+          type: string
+    PageMetadata:
+      type: object
+      properties:
+        size:
+          type: integer
+          format: int64
+        number:
+          type: integer
+          format: int64
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int64
+    PagedModelOrderDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderDTO'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+    PagedModelCustomerDTO:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerDTO'
+        page:
+          $ref: '#/components/schemas/PageMetadata'

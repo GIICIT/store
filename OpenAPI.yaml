@@ -12,7 +12,7 @@ info:
     name: Apache 2.0
     url: 'https://www.apache.org/licenses/LICENSE-2.0.htm'
 servers:
-  - url: 'http://localhost:8080'
+  - url: 'http://localhost:8081'
     description: dev
 paths:
   /order:
@@ -49,7 +49,7 @@ paths:
                 id:
                   type: integer
                   format: int64
-                descriptioon:
+                description:
                   type: string
   /customer:
     get:

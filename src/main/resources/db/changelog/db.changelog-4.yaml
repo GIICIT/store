@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - changeSet:
+      id: 5-data
+      author: wallacevanzyl
+      changes:
+        - sqlFile:
+            path: db/changelog/create-order-product-table.sql

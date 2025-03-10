@@ -2,11 +2,14 @@ package com.example.store.controller;
 
 import com.example.store.config.ManageCache;
 import com.example.store.dao.CustomerDAO;
+import com.example.store.dao.OrderDAO;
 import com.example.store.dto.CustomerDTO;
-import com.example.store.entity.Customer;
+import com.example.store.dto.OrderCustomerDTO;
+import com.example.store.dto.OrderDTO;
 import com.example.store.mapper.CustomerMapper;
-import com.example.store.repository.CustomerRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import lombok.RequiredArgsConstructor;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,10 +32,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(CustomerController.class)
+@WebMvcTest(OrderController.class)
 @ComponentScan(basePackageClasses = CustomerMapper.class)
+@RequiredArgsConstructor
 @AutoConfigureMockMvc(addFilters = false)
-class CustomerControllerTests {
+class OrderControllerTests {
 
     @Autowired
     private MockMvc mockMvc;
@@ -41,7 +45,7 @@ class CustomerControllerTests {
     private ObjectMapper objectMapper;
 
     @MockitoBean
-    private CustomerRepository customerRepository;
+    private OrderDAO orderDAO;
 
     @MockitoBean
     private CustomerDAO customerDAO;
@@ -49,53 +53,66 @@ class CustomerControllerTests {
     @MockitoBean
     private ManageCache manageCache;
 
-    private Customer customer;
-
+    private OrderDTO orderDTO;
     private CustomerDTO customerDTO;
 
     @BeforeEach
     void setUp() {
+        OrderCustomerDTO orderCustomerDTO = new OrderCustomerDTO();
+        orderCustomerDTO.setId(1L);
+        orderCustomerDTO.setName("John Doe");
+
         customerDTO = new CustomerDTO();
+        customerDTO.setId(1L);
         customerDTO.setName("John Doe");
+
+        orderDTO = new OrderDTO();
+        orderDTO.setId(1L);
+        orderDTO.setDescription("Test Order");
+        orderDTO.setCustomer(orderCustomerDTO);
     }
 
     @Test
-    void testGetAllCustomers() throws Exception {
-        when(customerDAO.getAllCustomers()).thenReturn(List.of(customerDTO));
+    void testGetAllOrders() throws Exception {
+        when(orderDAO.getAllOrders()).thenReturn(List.of(orderDTO));
 
-        mockMvc.perform(get("/customer"))
+        mockMvc.perform(get("/order"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$..name").value("John Doe"));
+                .andExpect(jsonPath("$[0].description").value("Test Order"))
+                .andExpect(jsonPath("$[0].customer.name").value("John Doe"));
     }
 
     @Test
-    void testCreateCustomer() throws Exception {
+    void testCreateOrder() throws Exception {
         when(customerDAO.createCustomer(customerDTO)).thenReturn(customerDTO);
+        when(orderDAO.createOrder(orderDTO)).thenReturn(orderDTO);
 
-        mockMvc.perform(post("/customer")
+        mockMvc.perform(post("/order")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(customerDTO)))
+                        .content(objectMapper.writeValueAsString(orderDTO)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.name").value("John Doe"));
+                .andExpect(jsonPath("$.description").value("Test Order"))
+                .andExpect(jsonPath("$.customer.name").value("John Doe"));
     }
 
     @Test
-    void testFindCustomerByName() throws Exception {
-        String name = "John Doe";
-        when(customerDAO.findCustomersByName(name)).thenReturn(List.of(customerDTO));
+    void testGetOrderByID() throws Exception {
+        when(orderDAO.getOrderByID(1L)).thenReturn(orderDTO);
 
-        mockMvc.perform(get("/customer/{name}", name))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].name").value("John Doe"));
+        mockMvc.perform(get("/order/1"))
+                .andExpect(status().isOk()) // Expect HTTP 200 OK
+                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.description").value("Test Order"))
+                .andExpect(jsonPath("$.customer.name").value("John Doe")); // Ensure customer is included
     }
 
     @Test
-    void testGetCustomerPaging() throws Exception {
-        Page<CustomerDTO> customerPage = new PageImpl<>(List.of(customerDTO));
-        when(customerDAO.getAllCustomersPaging(PageRequest.of(0, 10))).thenReturn(customerPage);
+    void testGetOrderPaging() throws Exception {
+        Page<OrderDTO> orderPage = new PageImpl<>(List.of(orderDTO));
+        when(orderDAO.getAllOrders(PageRequest.of(0, 10))).thenReturn(orderPage);
 
-        mockMvc.perform(get("/customer/0/10").contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/order/0/10").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content[0].name").value("John Doe"));
+                .andExpect(jsonPath("$.content[0].description").value("Test Order"));
     }
 }
